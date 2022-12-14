@@ -17,17 +17,17 @@ function showQuestions() {
 
 function setQuestion (question) {
     questionTitleEl.innerHTML = question.question_string;
-    addElement();
+    question.choices.forEach(addChoiceButton);
 }
 
-// Div element creation function template from MDN here: https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
+// Button element creation function template from MDN here: https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
 
-function addElement() {
+function addChoiceButton(choiceText) {
   // create a new div element
   const newDiv = document.createElement("button");
 
   // and give it some content
-  const newContent = document.createTextNode("This is a choice");
+  const newContent = document.createTextNode(choiceText);
 
   // add the text node to the newly created div
   newDiv.appendChild(newContent);
