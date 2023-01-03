@@ -1,26 +1,44 @@
-// Selects element by class
+// Selects element by id
 var timeEl = document.querySelector("#time");
 
 var startButton = document.querySelector("#start");
 
-var secondsLeft = 76;
+var initialsEl = document.querySelector("#initials");
 
-startButton.addEventListener("click", setTime);
+var submitHighScoresEl = document.querySelector("#submit");
 
-function setTime() {
-  // Sets interval in variable
-  var timerInterval = setInterval(function() {
-    secondsLeft--;
-    timeEl.textContent = secondsLeft;
-    console.log(secondsLeft);
+// Set event listeners
 
-    if(secondsLeft === 0) {
-      // Stops execution of action at set interval
-      clearInterval(timerInterval);
-      // Calls function to create and append image
-      sendMessage();
-    }
+submitHighScoresEl.addEventListener("click", saveHighScore);
 
-  }, 1000);
+// Set timerInterval var
+
+var secondsLeft = 61;
+var timerInterval;
+
+function startTimer() {
+  timerInterval = setInterval(timerCount, 1000);
 }
 
+function clearTimer()
+{
+  console.log("clearTimer called")
+  clearInterval(timerInterval);
+  console.log(timerInterval);
+  secondsLeft = 10;
+}
+
+function timerCount(){
+  secondsLeft--;
+  timeEl.textContent = secondsLeft;
+  if(secondsLeft === 0) {
+    // Stops execution of action at set interval
+    clearInterval(timerInterval);
+  }
+}
+
+function saveHighScore() {
+  var entry = document.createElement('li');
+  entry.appendChild(document.createTextNode(firstname));
+  list.appendChild(entry);
+}
