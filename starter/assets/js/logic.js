@@ -7,10 +7,6 @@ var initialsEl = document.querySelector("#initials");
 
 var submitHighScoresEl = document.querySelector("#submit");
 
-// Set event listeners
-
-submitHighScoresEl.addEventListener("click", saveHighScore);
-
 // Set timerInterval var
 
 var secondsLeft = 61;
