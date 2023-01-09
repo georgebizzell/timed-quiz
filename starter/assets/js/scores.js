@@ -6,6 +6,10 @@ var highScoreListEl = document.querySelector("#highscores");
 
 var submitHighScoresEl = document.querySelector("#submit");
 
+var clearHighScoresEl = document.querySelector("#clear");
+
+var score = 0;
+
 //Set Event Listener
 
 console.log(submitHighScoresEl); // null
@@ -13,10 +17,13 @@ console.log(submitHighScoresEl); // null
 // Check if element exists before calling addEventListener()
 if (submitHighScoresEl) {
   // Not called
-  submitHighScoresEl.addEventListener('click', showHighScores);
+  submitHighScoresEl.addEventListener('click', getInitials);
   }
 
-submitHighScoresEl.addEventListener("click", showHighScores);
+if (clearHighScoresEl) {
+  // Not called
+  clearHighScoresEl.addEventListener('click', clearHighScores);
+  }
 
 var latestScore = 0;
 
@@ -24,20 +31,34 @@ var latestScore = 0;
 var number_of_high_scores = 5;
 var high_scores = 'highScores';
 
-// Set event listeners
+// Clear High Scores
 
-function showHighScores() {
+function clearHighScores() {
+
+  localStorage.clear();
+
+  highScoreListEl.innerHTML = "No highscores available";
+
+}
+
+// Set score and initials before switching html page
+
+function getInitials() {
 
   var initials = document.getElementById("initials").value;
 
   localStorage.setItem("initials", initials);
 
-  console.log("Initials = " + initials);
-  
-  console.log(localStorage.getItem("latestScore"));
-  checkHighScores(localStorage.getItem("latestScore"));
-  window.location.href="./highscores.html";
+  localStorage.setItem("latestScore", score);
 
+  console.log("Initials = " + initials);
+
+  console.log("Scores = " + score);
+
+  checkHighScores(localStorage.getItem("latestScore"));
+  
+  window.location.href="./highscores.html";
+  
   }
 
 
@@ -96,32 +117,45 @@ function checkHighScores(score) {
 
   console.log("checkHighScores called");
 
-  const highScoreString = localStorage.getItem(high_scores);
+  const highScoreString = localStorage.getItem("high_scores");
+
   const highScores = JSON.parse(highScoreString) ?? [];
 
+  const lowestScore = highScores[number_of_high_scores-1]?.score ?? 0;
 
-const lowestScore = highScores[number_of_high_scores-1]?.score ?? 0;
+  console.log("Lowest score = " + lowestScore);
 
-if (score > lowestScore) {
+  console.log("Current score = " + localStorage.getItem("latestScore"));
+
+  score = localStorage.getItem("latestScore");
+
+if (score >= lowestScore) {
+
   saveHighScore(score, highScores);
-  createHighScoreList(highScores);
+
 }
 }
 
 function saveHighScore(score, highScores)
 {
-  console.log("saveHighScores called, score = " + score);
-  // Create new highscore key value pair
+  console.log("saveHighScores called");
 
   initials = localStorage.getItem("initials");
 
   console.log("This is initials from local storage = " + localStorage.getItem("initials"));
 
+  // Create new highscore key value pair
+
   const newScore = {score, initials};
+
+  console.log(newScore);
 
   console.log("this is score = " + score + "this is initials = " + initials);
 
   // Add the new key value pair to the high scores list
+
+  console.log("highScores = " + highScores);   
+  
   highScores.push(newScore);
 
   // Sort the list descending - with help from here https://www.w3schools.com/js/js_array_sort.asp
@@ -135,10 +169,25 @@ function saveHighScore(score, highScores)
   // Save new high score list
   localStorage.setItem(high_scores, JSON.stringify(highScores));
 
+  localStorage.setItem("highScores", highScores);
+
+  var checksaving = localStorage.getItem("highScores");
+
+  console.log(checksaving);
+
 }
 
-function createHighScoreList(highScores) {
-   console.log("createHighScoreList called");
-   console.log(highScores);
-   highScoreListEl.innerHTML = highScores.map((score) => `<li>${score.score} - ${score.initials}`);
+function renderHighScores() {
+   
+  console.log("renderHighScores called");
+
+  var highScores = localStorage.getItem("highScores");
+
+  console.log(highScores);
+
+   if (highScores)
+   {
+    highScoreListEl.innerHTML = highScores.map((score) => `<li>${score.score} - ${score.initials}`);
+   }
+      
 }

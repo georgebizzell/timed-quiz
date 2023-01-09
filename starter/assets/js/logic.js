@@ -5,10 +5,6 @@ var startButton = document.querySelector("#start");
 
 var submitHighScoresEl = document.querySelector("#submit");
 
-//Set Event Listener
-
-submitHighScoresEl.addEventListener("click", showHighScores);
-
 // Set timerInterval var
 
 var secondsLeft = 61;
