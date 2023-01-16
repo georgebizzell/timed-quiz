@@ -1,8 +1,18 @@
 # Module 6 Challenge Web APIs: Code Quiz
 
-Deployment:
+Timed quiz with 5 example questions on Javascript.
 
-Go to 
+* Timer counts down from 60 seconds
+* If the user gets a question wrong, they lose 10 seconds
+* Every correct question earns the user 5 points
+* The user can enter their initials to keep track of top scores
+* A highscores table using local storage keeps track of the top 5 scores
+
+## Deployment
+
+Github pages: https://georgebizzell.github.io/timed-quiz/
+
+Github repo:  https://github.com/georgebizzell/timed-quiz
 
 ## Your Task
 

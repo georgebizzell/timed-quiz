@@ -112,7 +112,7 @@ function recordHighScores ()
 
  // Switch to the new highScores screen
 
-  window.location.href = "highscores.html";
+  window.location.href = "./starter/assets/html/highscores.html";
 
 }
 
@@ -135,14 +135,14 @@ function checkAnswer(answer)
     if (answer == all_questions[i].correct)
     {
         feedbackEl.textContent = "Correct!"
-        var audio = new Audio('../starter/assets/sfx/correct.wav');
+        var audio = new Audio('./starter/assets/sfx/correct.wav');
         score = score + 5;
         audio.play();
     }
     else
     {
         feedbackEl.textContent = "Wrong!"
-        var audio = new Audio('../starter/assets/sfx/incorrect.wav');     
+        var audio = new Audio('./starter/assets/sfx/incorrect.wav');     
         secondsLeft = secondsLeft - 10;
         audio.play();
     }

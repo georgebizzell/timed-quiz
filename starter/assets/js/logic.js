@@ -14,13 +14,16 @@ function startTimer() {
   timerInterval = setInterval(timerCount, 1000);
 }
 
+// Clear timer function
+
 function clearTimer()
 {
   console.log("clearTimer called")
   clearInterval(timerInterval);
   console.log(timerInterval);
-  secondsLeft = 10;
 }
+
+// Timer countdown function
 
 function timerCount(){
   secondsLeft--;
@@ -28,5 +31,6 @@ function timerCount(){
   if(secondsLeft === 0) {
     // Stops execution of action at set interval
     clearInterval(timerInterval);
+    window.location.href = "highscores.html";
   }
 }
