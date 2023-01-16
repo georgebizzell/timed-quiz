@@ -66,10 +66,10 @@ function finalScore ()
 
 function recordHighScores ()
 {
-  // if (localStorage.getItem("highScores"))
-  // {
-  //   highScores = localStorage.getItem("highScores")
-  // }
+   if (localStorage.getItem("highScores"))
+   {
+     highScores = localStorage.getItem("highScores")
+   }
     
   console.log("this is just the console log = " + score);
   console.log("this is just the console log = " + initialsEl.value);
@@ -82,7 +82,13 @@ function recordHighScores ()
   thisGo.initials = initialsEl.value;
   thisGo.score = score;
 
-  console.log(highScores);
+  console.log("highScores = " + highScores);
+
+  console.log("thisGo = " + JSON.stringify(thisGo));
+
+  console.log("highScores typeof = " + typeof(highScores));
+
+  highScores = JSON.parse(highScores);
 
   highScores.push(thisGo);
 
@@ -90,9 +96,7 @@ function recordHighScores ()
 
   localStorage.setItem("highScores", JSON.stringify(highScores));
 
-  var check = localStorage.getItem("highScores");
 
-  console.log(JSON.parse(check));
 
  // highScoresTable();
 
