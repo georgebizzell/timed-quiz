@@ -1,6 +1,6 @@
 // Selects element by id
 
-var initials;
+var initialsEl = document.querySelector("#initials");
 
 var highScoreListEl = document.querySelector("#highscores");
 
@@ -14,10 +14,21 @@ var score = 0;
 
 console.log(submitHighScoresEl); // null
 
+// High scores array
+
+var highScores = [];
+
+// Initials and score object
+
+const initialsAndScore = {
+  initials: "abc",
+  score: 50
+}
+
 // Check if element exists before calling addEventListener()
 if (submitHighScoresEl) {
   // Not called
-  submitHighScoresEl.addEventListener('click', getInitials);
+  submitHighScoresEl.addEventListener('click', recordHighScores);
   }
 
 if (clearHighScoresEl) {
@@ -29,7 +40,6 @@ var latestScore = 0;
 
 // Set up high score parameters
 var number_of_high_scores = 5;
-var high_scores = 'highScores';
 
 // Clear High Scores
 
@@ -41,37 +51,67 @@ function clearHighScores() {
 
 }
 
-// Set score and initials before switching html page
+function finalScore ()
+{
+  console.log("renderHighScores called");
 
-function getInitials() {
+  feedbackEl.classList.replace('show', 'hide');
+  nextButton.classList.replace('show', 'hide');
+  questionsEl.classList.replace('show', 'hide');
+  endScreenEl.classList.replace('hide', 'show');
 
-  var initials = document.getElementById("initials").value;
+  finalScoreEl.textContent = score;
 
-  localStorage.setItem("initials", initials);
+}
+
+function recordHighScores ()
+{
+  // if (localStorage.getItem("highScores"))
+  // {
+  //   highScores = localStorage.getItem("highScores")
+  // }
+    
+  console.log("this is just the console log = " + score);
+  console.log("this is just the console log = " + initialsEl.value);
 
   localStorage.setItem("latestScore", score);
+  localStorage.setItem("initials", initialsEl.value);
 
-  console.log("Initials = " + initials);
+  const thisGo = Object.create(initialsAndScore)
 
-  console.log("Scores = " + score);
+  thisGo.initials = initialsEl.value;
+  thisGo.score = score;
 
-  checkHighScores(localStorage.getItem("latestScore"));
-  
-  window.location.href="./highscores.html";
-  
-  }
+  console.log(highScores);
 
+  highScores.push(thisGo);
 
-function renderHighScores ()
-  {
-    console.log("renderHighScores called");
-      feedbackEl.classList.replace('show', 'hide');
-      nextButton.classList.replace('show', 'hide');
-      questionsEl.classList.replace('show', 'hide');
-      endScreenEl.classList.replace('hide', 'show');
-      finalScoreEl.textContent = score;
-      localStorage.setItem("latestScore", score);
-  }
+  console.log(highScores);
+
+  localStorage.setItem("highScores", JSON.stringify(highScores));
+
+  var check = localStorage.getItem("highScores");
+
+  console.log(JSON.parse(check));
+
+ // highScoresTable();
+
+  window.location.href = "highscores.html";
+
+}
+
+function highScoresTable()
+{
+  var scoreTable = localStorage.getItem("highScores");
+
+  scoreTable = JSON.parse(scoreTable);
+
+  console.log(scoreTable[0].initials);
+  console.log(scoreTable[0].score);
+
+  highScoreListEl.innerHTML = scoreTable.map((object) => `<li>${object.score} - ${object.initials}`).join('');
+
+}
 
 function checkAnswer(answer)
 {   
@@ -100,94 +140,11 @@ function checkAnswer(answer)
         nextButton.textContent = "See results";
         nextButton.classList.add("seeResults");
         nextButton.removeEventListener("click", renderQuestion);
-        nextButton.addEventListener("click", renderHighScores);
+        nextButton.addEventListener("click", finalScore);
     }
 
     feedbackEl.classList.replace('hide', 'show');
     nextButton.classList.replace('hide', 'show');
 
     i++;
-}
-
-//Highscores logic - with help from this site https://michael-karen.medium.com/how-to-save-high-scores-in-local-storage-7860baca9d68
-
-
-
-function checkHighScores(score) {
-
-  console.log("checkHighScores called");
-
-  const highScoreString = localStorage.getItem("high_scores");
-
-  const highScores = JSON.parse(highScoreString) ?? [];
-
-  const lowestScore = highScores[number_of_high_scores-1]?.score ?? 0;
-
-  console.log("Lowest score = " + lowestScore);
-
-  console.log("Current score = " + localStorage.getItem("latestScore"));
-
-  score = localStorage.getItem("latestScore");
-
-if (score >= lowestScore) {
-
-  saveHighScore(score, highScores);
-
-}
-}
-
-function saveHighScore(score, highScores)
-{
-  console.log("saveHighScores called");
-
-  initials = localStorage.getItem("initials");
-
-  console.log("This is initials from local storage = " + localStorage.getItem("initials"));
-
-  // Create new highscore key value pair
-
-  const newScore = {score, initials};
-
-  console.log(newScore);
-
-  console.log("this is score = " + score + "this is initials = " + initials);
-
-  // Add the new key value pair to the high scores list
-
-  console.log("highScores = " + highScores);   
-  
-  highScores.push(newScore);
-
-  // Sort the list descending - with help from here https://www.w3schools.com/js/js_array_sort.asp
-  // If the result is negative, a is sorted before b
-  // If the result is positive, b is sorted before a
-  highScores.sort((a, b) => b.score - a.score);
-
-  // Select new list by splicing the list and keeping the 5 highest scores
-  highScores.splice(number_of_high_scores);
-
-  // Save new high score list
-  localStorage.setItem(high_scores, JSON.stringify(highScores));
-
-  localStorage.setItem("highScores", highScores);
-
-  var checksaving = localStorage.getItem("highScores");
-
-  console.log(checksaving);
-
-}
-
-function renderHighScores() {
-   
-  console.log("renderHighScores called");
-
-  var highScores = localStorage.getItem("highScores");
-
-  console.log(highScores);
-
-   if (highScores)
-   {
-    highScoreListEl.innerHTML = highScores.map((score) => `<li>${score.score} - ${score.initials}`);
-   }
-      
 }

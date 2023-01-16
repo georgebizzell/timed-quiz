@@ -63,6 +63,7 @@ function addChoiceButton(choiceText) {
 
 // Coding questions from here - https://www.interviewbit.com/javascript-mcq/
 // Array of objects
+// Realised I could have given the question object a function which checks the answer...
 
 var all_questions = [
   {
