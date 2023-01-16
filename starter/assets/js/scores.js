@@ -68,19 +68,26 @@ function recordHighScores ()
 {
    if (localStorage.getItem("highScores"))
    {
-     highScores = localStorage.getItem("highScores")
+     highScores = localStorage.getItem("highScores");
+     highScores = JSON.parse(highScores);
    }
     
   console.log("this is just the console log = " + score);
   console.log("this is just the console log = " + initialsEl.value);
 
+   // Testing using local storage
+
   localStorage.setItem("latestScore", score);
   localStorage.setItem("initials", initialsEl.value);
+
+  // Create object for the score and initials and set them
 
   const thisGo = Object.create(initialsAndScore)
 
   thisGo.initials = initialsEl.value;
   thisGo.score = score;
+
+  // Console logging used for testing
 
   console.log("highScores = " + highScores);
 
@@ -88,17 +95,22 @@ function recordHighScores ()
 
   console.log("highScores typeof = " + typeof(highScores));
 
-  highScores = JSON.parse(highScores);
+  // Push the new score to the highscores array
 
   highScores.push(thisGo);
 
-  console.log(highScores);
-
+  // Sort the list
+  highScores.sort((a, b) => b.score - a.score);
+  
+  // Cut list at the chosen number of high scores (default is 5)
+  highScores.splice(number_of_high_scores);
+  
+  // Set in local storage
   localStorage.setItem("highScores", JSON.stringify(highScores));
 
+ // highScoresTable(); - removing this because it can't run until the element is on the screen.
 
-
- // highScoresTable();
+ // Switch to the new highScores screen
 
   window.location.href = "highscores.html";
 
@@ -110,10 +122,9 @@ function highScoresTable()
 
   scoreTable = JSON.parse(scoreTable);
 
-  console.log(scoreTable[0].initials);
-  console.log(scoreTable[0].score);
+  // Map the scoreTable object to the element on the highscores.html screen
 
-  highScoreListEl.innerHTML = scoreTable.map((object) => `<li>${object.score} - ${object.initials}`).join('');
+  highScoreListEl.innerHTML = scoreTable.map((object) => `<li>${object.score} - ${object.initials}</li>`).join('');
 
 }
 
